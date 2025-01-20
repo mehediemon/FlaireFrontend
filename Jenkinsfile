@@ -6,8 +6,8 @@ pipeline {
     }
 
     environment {
-        AWS_ACCESS_KEY_ID = credentials('aws-access-key') // AWS credentials stored in Jenkins
-        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
+        AWS_ACCESS_KEY_ID = credentials('aws-access-keys') // AWS credentials stored in Jenkins
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
         AWS_DEFAULT_REGION = 'ap-south-1'
     }
 
@@ -30,8 +30,7 @@ pipeline {
         stage('Deploy Frontend to S3') {
             steps {
                 script {
-                    def bucketName = "testnodebucket"
-                    withAWS(region: "${AWS_DEFAULT_REGION}", credentials: 'aws-credentials-id') {
+
                         sh '''
                         # Sync build folder with the S3 bucket
                         aws s3 sync mehedi-flaire-frontend/build/ s3://${bucketName}/ --delete
@@ -39,7 +38,7 @@ pipeline {
                         # Configure the S3 bucket for static website hosting
                         aws s3 website s3://${bucketName}/ --index-document index.html --error-document index.html
                         '''
-                    }
+
                 }
             }
         }
