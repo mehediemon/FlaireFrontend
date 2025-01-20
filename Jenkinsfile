@@ -29,11 +29,17 @@ pipeline {
 
         stage('Deploy Frontend to S3') {
             steps {
-                withAWS(region: "${AWS_DEFAULT_REGION}", credentials: 'aws-credentials-id') {
-                    sh '''
-                    aws s3 sync mehedi-flaire-frontend/build/ s3://testnodebucket/ --delete
-                    aws s3 website s3://testnodebucket/ --index-document index.html --error-document index.html
-                    '''
+                script {
+                    def bucketName = "testnodebucket"
+                    withAWS(region: "${AWS_DEFAULT_REGION}", credentials: 'aws-credentials-id') {
+                        sh '''
+                        # Sync build folder with the S3 bucket
+                        aws s3 sync mehedi-flaire-frontend/build/ s3://${bucketName}/ --delete
+                        
+                        # Configure the S3 bucket for static website hosting
+                        aws s3 website s3://${bucketName}/ --index-document index.html --error-document index.html
+                        '''
+                    }
                 }
             }
         }
