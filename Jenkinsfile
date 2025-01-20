@@ -7,7 +7,6 @@ pipeline {
         AWS_DEFAULT_REGION = 'ap-south-1'
     }
 
-
     stages {
         stage('Checkout Code') {
             steps {
@@ -15,7 +14,6 @@ pipeline {
             }
         }
 
-    stages {
         stage('Build') {
             steps {
                 sh 'npm install'
@@ -25,15 +23,11 @@ pipeline {
 
         stage('Deploy Frontend to S3') {
             steps {
-                script {
-                       sh """
-                          aws s3 sync frontend/build/ s3://testnodebucket/ --delete
-                          aws s3 website s3://testnodebucket/ --index-document index.html --error-document index.html
-                          """
-                }
+                sh """
+                aws s3 sync frontend/build/ s3://testnodebucket/ --delete
+                aws s3 website s3://testnodebucket/ --index-document index.html --error-document index.html
+                """
             }
         }
     }
-}
-
 }
