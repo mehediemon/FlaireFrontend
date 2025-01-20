@@ -5,7 +5,10 @@ pipeline {
         AWS_ACCESS_KEY_ID = credentials('aws-access-key') // AWS credentials stored in Jenkins
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
         AWS_DEFAULT_REGION = 'ap-south-1'
+    }
 
+    tools {
+        nodejs 'NodeJS_16' // Replace 'NodeJS_16' with the name configured in Jenkins for Node.js
     }
 
     stages {
@@ -34,6 +37,5 @@ pipeline {
                 }
             }
         }
-
     }
 }
