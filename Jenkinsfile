@@ -26,18 +26,14 @@ pipeline {
         stage('Deploy Frontend to S3') {
             steps {
                 script {
-                    awsS3Sync()
+                       sh """
+                          aws s3 sync frontend/build/ s3://testnodebucket/ --delete
+                          aws s3 website s3://testnodebucket/ --index-document index.html --error-document index.html
+                          """
                 }
             }
         }
     }
-}
-
-def awsS3Sync() {
-    sh """
-    aws s3 sync frontend/build/ s3://testnodebucket/ --delete
-    aws s3 website s3://testnodebucket/ --index-document index.html --error-document index.html
-    """
 }
 
 }
