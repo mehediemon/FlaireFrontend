@@ -39,3 +39,5 @@ def awsS3Sync() {
     aws s3 website s3://testnodebucket/ --index-document index.html --error-document index.html
     """
 }
+
+}
