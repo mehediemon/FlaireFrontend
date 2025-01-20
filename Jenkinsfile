@@ -6,6 +6,10 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
         AWS_DEFAULT_REGION = 'ap-south-1'
     }
+    tools {
+        nodejs 'nodejs' // Replace 'NodeJS_16' with the name configured in Jenkins for Node.js
+    }
+
 
     stages {
         stage('Checkout Code') {
@@ -14,13 +18,25 @@ pipeline {
             }
         }
 
+    stages {
+        stage('Build') {
+            steps {
+                sh 'npm install'
+                sh 'npm run build'
+            }
+        }
+
         stage('Deploy Frontend to S3') {
             steps {
-                sh """
-                aws s3 sync build/ s3://testnodebucket/ --delete
-                aws s3 website s3://testnodebucket/ --index-document index.html --error-document index.html
-                """
+                script {
+                       sh """
+                          aws s3 sync frontend/build/ s3://testnodebucket/ --delete
+                          aws s3 website s3://testnodebucket/ --index-document index.html --error-document index.html
+                          """
+                }
             }
         }
     }
+}
+
 }
