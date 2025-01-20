@@ -57,12 +57,12 @@ const Register = () => {
                     onClick={handleRegister}
                     sx={{ marginTop: 2 }}
                 >
-                    Register
+                    Register Click
                 </Button>
                 <Typography variant="body2" align="center" sx={{ marginTop: 2 }}>
                     Already have an account?{' '}
                     <Button color="primary" onClick={() => navigate('/')}>
-                        Login
+                        Login go
                     </Button>
                 </Typography>
             </Box>
