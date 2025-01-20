@@ -20,9 +20,11 @@ pipeline {
 
         stage('Build Frontend') {
             steps {
-                dir('frontend') {
-                    sh 'npm install'
-                    sh 'npm run build'
+                nodejs('NodeJS_16') {
+                    dir('frontend') {
+                        npmInstall()
+                        npm('run build') // Use the NodeJS plugin's npm function
+                    }
                 }
             }
         }
@@ -30,12 +32,16 @@ pipeline {
         stage('Deploy Frontend to S3') {
             steps {
                 script {
-                    sh """
-                    aws s3 sync frontend/build/ s3://testnodebucket/ --delete
-                    aws s3 website s3://testnodebucket/ --index-document index.html --error-document index.html
-                    """
+                    awsS3Sync()
                 }
             }
         }
     }
+}
+
+def awsS3Sync() {
+    sh """
+    aws s3 sync frontend/build/ s3://testnodebucket/ --delete
+    aws s3 website s3://testnodebucket/ --index-document index.html --error-document index.html
+    """
 }
