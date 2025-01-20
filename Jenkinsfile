@@ -17,6 +17,7 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/mehediemon/FlaireFrontend.git'
             }
         }
+    }
 
     stages {
         stage('Build') {
@@ -37,6 +38,6 @@ pipeline {
             }
         }
     }
-}
+
 
 }
