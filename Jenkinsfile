@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    environment {
+
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/mehediemon/frontend.git'
+            }
+        }
+
+        stage('Build Frontend') {
+            steps {
+                dir('frontend') {
+                    sh 'npm install'
+                    sh 'npm run build'
+                }
+            }
+        }
+
+        stage('Deploy Frontend to S3') {
+            steps {
+                script {
+                    sh """
+                    aws s3 sync frontend/build/ s3://testnodebucket/ --delete
+                    aws s3 website s3://testnodebucket/ --index-document index.html --error-document index.html
+                    """
+                }
+            }
+        }
