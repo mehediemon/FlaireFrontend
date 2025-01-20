@@ -7,9 +7,6 @@ pipeline {
         AWS_DEFAULT_REGION = 'ap-south-1'
     }
 
-    tools {
-        nodejs 'NodeJS_LTS' // Use the configured Node.js installation name
-    }
 
     stages {
         stage('Checkout Code') {
@@ -18,14 +15,11 @@ pipeline {
             }
         }
 
-        stage('Build Frontend') {
+    stages {
+        stage('Build') {
             steps {
-                nodejs('NodeJS_LTS') {
-                    dir('frontend') {
-                        npmInstall()
-                        npm('run build')
-                    }
-                }
+                sh 'npm install'
+                sh 'npm run build'
             }
         }
 
