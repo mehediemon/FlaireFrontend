@@ -33,7 +33,7 @@ pipeline {
 
                         sh '''
                         # Sync build folder with the S3 bucket
-                        aws s3 sync mehedi-flaire-frontend/build/ s3://${bucketName}/ --delete
+                        aws s3 sync build/ s3://${bucketName}/ --delete
                         
                         # Configure the S3 bucket for static website hosting
                         aws s3 website s3://${bucketName}/ --index-document index.html --error-document index.html
