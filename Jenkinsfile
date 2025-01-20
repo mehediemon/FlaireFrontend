@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'NodeJS_16' // Replace 'NodeJS_16' with the correct name of your Node.js installation in Jenkins
+        nodejs 'nodejs' // Replace 'NodeJS_16' with the correct name of your Node.js installation in Jenkins
     }
 
     environment {
