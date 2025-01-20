@@ -1,22 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import {
-    Box,
-    Button,
-    TextField,
-    Typography,
-    List,
-    ListItem,
-    ListItemText,
-    IconButton,
-    Paper,
-    AppBar,
-    Toolbar,
-    Container,
-} from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { useNavigate } from 'react-router-dom';
+// Other imports
 
 const TaskManager = () => {
     const [tasks, setTasks] = useState([]);
@@ -25,11 +9,7 @@ const TaskManager = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
 
-    useEffect(() => {
-        fetchTasks();
-    }, []);
-
-    const fetchTasks = async () => {
+    const fetchTasks = useCallback(async () => {
         try {
             const response = await axios.get('http://localhost:5001/tasks', {
                 headers: { Authorization: `Bearer ${token}` },
@@ -38,7 +18,11 @@ const TaskManager = () => {
         } catch (error) {
             alert('Error fetching tasks');
         }
-    };
+    }, [token]); // Include `token` as a dependency
+
+    useEffect(() => {
+        fetchTasks();
+    }, [fetchTasks]); // Include `fetchTasks` in the dependency array
 
     const addTask = async () => {
         try {
@@ -76,8 +60,8 @@ const TaskManager = () => {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('token'); // Clear the token from localStorage
-        navigate('/'); // Redirect to the login page
+        localStorage.removeItem('token');
+        navigate('/');
     };
 
     return (
