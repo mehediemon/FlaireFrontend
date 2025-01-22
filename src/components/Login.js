@@ -53,7 +53,7 @@ const Login = () => {
                 <Typography variant="body2" align="center" sx={{ marginTop: 2 }}>
                     Don't have an account?{' '}
                     <Button color="primary" onClick={() => navigate('/register')}>
-                        Register
+                        Register here
                     </Button>
                 </Typography>
             </Box>
